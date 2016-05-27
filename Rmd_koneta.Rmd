@@ -1,0 +1,227 @@
+---
+title: "R Markdownのちょいネタ集"
+subtitle: "Hijiyama.R #4"
+author: "kazutan"
+date: "2016/5/28"
+output:
+  revealjs::revealjs_presentation:
+    center: true
+    toc: true
+    pandoc_args: [
+      "--number-section",
+      "--from", "markdown+autolink_bare_uris+tex_math_single_backslash-implicit_figures"
+    ]
+css: "for-revealjs.css"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+# はじめに
+
+## 自己紹介
+
+<div class="column1">
+- 比治山大学短期大学部
+- @kazutan
+    - Twitter
+    - GitHub
+    - Qiita
+- http://kz-md.net/
+- http://blog.kz-md.net/
+</div>
+<div class="column2">
+![icon](pics/user.png)
+</div>
+
+## 今日のおはなし
+
+- みんな大好きR Markdown
+- でもそのまま使うだけだともったいない
+- 新機能やちょいネタを時間の限りご紹介
+
+## 補足
+
+- 今回の内容は以下のGitHubリポジトリにまとめています  
+**kazutan/HijiyamaR4**
+- 以下の環境で動作を確認しています
+    - プレビュー版RStudio(v0.99.1197)
+    - github版rmarkdown(v0.9.6.10)
+    - Mac, Ubuntu環境
+
+# R Markdownとは?
+
+## Rからドキュメント生成
+
+<div class="column1">
+- Rからドキュメント、スライド、レポートを作成
+    - markdownがコア
+    - その中にRチャンクでコードを挿入
+</div>
+<div class="column2">
+![output formats](pics/RMarkdownOutputFormats.png)
+</div>
+
+## どんなのが作れる?
+
+```{r eval=TRUE, echo=FALSE}
+kosaki <- data.frame(type=c("ドキュメント", "スライド", "レポート", "その他"),
+                     detail=c("html, pdf, docx, odt, rtf, md", "ioslides, reveal.js, slidy, Beamer",
+                              "Tufte Handout, dashboard", "Web site, books(pdf, epub), etc..."))
+knitr::kable(kosaki)
+```
+
+## どんな感じで作るの?
+
+- RStudioから作成すると楽
+    - (デモ)
+- 詳しくは以下の連載記事を参照
+    - [R Markdownで楽々レポートづくり：連載｜gihyo.jp … 技術評論社](http://gihyo.jp/admin/serial/01/r-markdown)
+- その他参考資料
+    - [本家R Markdownサイト](http://rmarkdown.rstudio.com/)
+    - [R Markdown Cheat Sheet](http://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
+# タブ機能
+
+## タブ機能、ほしくないです?
+
+- R MarkdownではBootstrapが組み込まれている
+- Bootstrapにはタブが実装されている
+- なんとかなるんじゃね?
+
+## 実装してみた
+
+- [R Markdownでタブ機能の実装 - Qiita](http://qiita.com/kazutan/items/27aaf29d09d4ddb1b80f)
+    - タブ部分はhtmlだけど、それ以外はうまく収まった
+    - その他にもBootstrapの機能が使えた
+
+```
+# {.tab-content}
+
+<ul class="nav nav-tabs">
+  <li class="active">
+  <a href="#tab1" data-toggle="tab">tab1</a>
+  </li>
+  <li role="presentation">
+  <a href="#tab2" data-toggle="tab">tab2</a>
+  </li>
+</ul>
+
+## tab1 {#tab1 .tab-pane .active}
+hogehoge. hogehoge.
+
+
+## tab2 {#tab2 .tab-pane}
+wasshoi! wasshoi!
+```
+
+## 三ヶ月後…
+
+- 本家が(もっとエレガントに)[実装した](http://rmarkdown.rstudio.com/html_document_format.html#tabbed_sections)
+    - javascriptを組み込んでタブ部分を自動生成するっぽい
+    - サンプルは[こちら](https://rpubs.com/kazutan/rmd_v0-9-5_test)
+    - 見てる方向は近かった、それでいいじゃないですか
+    
+```
+    ## タブセクションのタイトル見出し {.tabset}
+    (タブ前の内容)
+    ### タブその1
+    (タブその1の内容)
+    ### タブその2
+    (タブその2の内容)
+```
+
+# フローティングTOC
+
+## 見出しリスト、いいですよね
+
+- YAMLに`toc: true`でサクッとできる
+    - でもトップにしか出てこない
+    - できればサイドメニューとして出てくれたら…
+    - てかそれ、Bootstrapにあるってことは…
+
+## 新機能として追加されました
+
+- YAMLに以下の2行を加えるだけでOK
+    - 詳しくは[本家ドキュメント](http://rmarkdown.rstudio.com/html_document_format.html#floating_toc)参照
+    - サンプルは[こちら](https://rpubs.com/kazutan/rmd_v0-9-5_test)
+    - 日本語見出しの場合には注意が必要
+    - なんかBootstrapの機能をmdで実装できる環境になってきた気が
+
+```
+---
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+```
+
+# 新規Rmd作成関数
+
+## Rmdファイル、作るの面倒
+
+- Rmdファイルを作成するには…
+    - RStudioでボタンをポチポチ
+    - (たぶん)あるんだろうけど、YAMLは結局書き直すことが多い
+    - 関数の引数で色々指定して、一気に作れるといいのに
+
+## ないならば作る、そ(ry
+
+- `zousan::new_rmd_ja()`
+    - `devtools::install_github("kazutan/zousan")`
+    - オプションで色々指定できます
+    - 完全に私の好みで作ってます
+    - feather requestやpull requestおまちしてます
+        - でも他のちゃんとした自作パッケージに移行するかも…
+
+# RmdでWebサイト作成
+
+## Webサイトまでやってよ
+
+- R Markdownには豊富な機能が満載
+- もうどうせならWebサイトまで作ってよ
+    - ひとつひとつrenderするの面倒
+    - できればRStudioでポタン一つでできないの?
+
+## できました
+
+- 以下の環境が必要です
+    - RStudioプレビュー版
+    - rmarkdownパッケージのgithub版
+- 細かい手順は[rmarkdown本家ドキュメント](http://rmarkdown.rstudio.com/rmarkdown_websites.html)を
+    - ポイントは`_site.yml`
+    - RStudioの**Project Option...**で**build toolsを`Website`に設定**
+        - これでサイトを一発でbuildできるように
+    - サンプルは[こちら](http://kazutan.github.io/rmd_site_test/)
+    - ソースコードは[こちら](https://github.com/kazutan/rmd_site_test)
+        - ここに現在マニュアル作成中…
+
+# ダッシュボードつくりたい
+
+## はい、ありました
+
+- flexdashboardパッケージ
+    - 簡単にダッシュボードレイアウトを作成可能
+    - `devtools::install_github("rstudio/flexdashboard")`
+        - Rmdのテンプレートから新規作成
+    - 詳細は[本家のサイト](http://rstudio.github.io/flexdashboard/)参照
+    - サンプルは[こちら](http://kazutan.github.io/TokyoR53/flexdashboard_test.html)
+    - ソースコードは[こちら](https://github.com/kazutan/TokyoR53/blob/master/flexdashboard_test.Rmd)
+
+# いちいちknitせずに確認したい
+
+## R notebookができました
+
+- なんと、Rmdの編集ウィンドウ上で出力を表示できるようになります
+    - RStudioのプレビュー版、rmarkdownのgithub版が必要
+    - Jupyter notebookと比較されますが別物です
+    - (デモ)
+
+## Enjoy!
+
+- 今回のネタに興味がある方は`@kazutan`もしくはr-wakalangの`#rmarkdown`へ
+- 本発表のgithubリポジトリ
+    - **kazutan/HijiyamaR**
