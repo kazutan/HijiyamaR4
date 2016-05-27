@@ -457,12 +457,13 @@ library(tidyr)</code></pre>
 ## [1] knitr_1.13       tidyr_0.4.1      dplyr_0.4.3.9001
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_0.12.5        digest_0.6.9       assertthat_0.1    
-##  [4] R6_2.1.2           DBI_0.4-1          formatR_1.4       
-##  [7] magrittr_1.5       evaluate_0.9       highr_0.6         
-## [10] stringi_1.0-1      lazyeval_0.1.10    rmarkdown_0.9.6.10
-## [13] tools_3.3.0        stringr_1.0.0      yaml_2.1.13       
-## [16] rsconnect_0.4.3    htmltools_0.3.5    tibble_1.0-5</code></pre>
+##  [1] Rcpp_0.12.5        codetools_0.2-14   revealjs_0.6.1    
+##  [4] digest_0.6.9       assertthat_0.1     R6_2.1.2          
+##  [7] DBI_0.4-1          formatR_1.4        magrittr_1.5      
+## [10] evaluate_0.9       highr_0.6          stringi_1.0-1     
+## [13] lazyeval_0.1.10    rmarkdown_0.9.6.10 tools_3.3.0       
+## [16] stringr_1.0.0      yaml_2.1.13        rsconnect_0.4.3   
+## [19] htmltools_0.3.5    tibble_1.0-5</code></pre>
 </div>
 </div>
 <div class="section level1">
@@ -764,10 +765,8 @@ x1をキーにして、mergeします</li>
 </div>
 <div id="dplyrfull_join" class="section level2">
 <h2><span class="header-section-number">11.2</span> dplyr::full_join()</h2>
-<pre class="r"><code>df &lt;- dplyr::full_join(a,b,by=&quot;x1&quot;)</code></pre>
-<pre><code>## Warning in full_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factors with different levels, coercing to character vector</code></pre>
-<pre class="r"><code>kable(df)</code></pre>
+<pre class="r"><code>df &lt;- dplyr::full_join(a,b,by=&quot;x1&quot;)
+kable(df)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -807,10 +806,8 @@ x1をキーにして、mergeします</li>
 </div>
 <div id="dplyrinner_join" class="section level2">
 <h2><span class="header-section-number">11.3</span> dplyr::inner_join()</h2>
-<pre class="r"><code>df &lt;- dplyr::inner_join(a,b,by=&quot;x1&quot;)</code></pre>
-<pre><code>## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factors with different levels, coercing to character vector</code></pre>
-<pre class="r"><code>kable(df)</code></pre>
+<pre class="r"><code>df &lt;- dplyr::inner_join(a,b,by=&quot;x1&quot;)
+kable(df)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -878,9 +875,8 @@ kable(df)</code></pre>
 </div>
 <div id="dplyrbind_rows" class="section level2">
 <h2><span class="header-section-number">11.5</span> dplyr::bind_rows()</h2>
-<pre class="r"><code>df &lt;- dplyr::bind_rows(y, z)</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
-<pre class="r"><code>kable(df)</code></pre>
+<pre class="r"><code>df &lt;- dplyr::bind_rows(y, z)
+kable(df)</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -922,9 +918,8 @@ kable(df)</code></pre>
 </div>
 <div id="dplyrbind_row-.id" class="section level2">
 <h2><span class="header-section-number">11.6</span> dplyr::bind_row(…, .id=)</h2>
-<pre class="r"><code>df &lt;- dplyr::bind_rows(y, z, .id = &quot;df_id&quot;)</code></pre>
-<pre><code>## Warning in bind_rows_(x, .id): Unequal factor levels: coercing to character</code></pre>
-<pre class="r"><code>kable(df)</code></pre>
+<pre class="r"><code>df &lt;- dplyr::bind_rows(y, z, .id = &quot;df_id&quot;)
+kable(df)</code></pre>
 <table>
 <thead>
 <tr class="header">

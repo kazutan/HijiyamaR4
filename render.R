@@ -4,7 +4,9 @@ rmarkdown::render("data_handling.Rmd", output_format = "revealjs::revealjs_prese
 rmarkdown::render("data_handling.Rmd", output_format = "html_document", output_file = "data_handling_d.html")
 rmarkdown::render("r-intro.Rmd")
 rmarkdown::render("Rmd_koneta.Rmd")
+rmarkdown::render("e-stat_test.Rmd")
 
+rmarkdown::render("flexdashboard_test.Rmd")
 
 
 # for leaflet in reveal.js
