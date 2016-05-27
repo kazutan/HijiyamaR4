@@ -6,6 +6,7 @@ date: "2016年5月28日"
 output:
   slidy_presentation:
     duration: 10
+    keep_md: true
 ---
 
 ```{r setup, include=FALSE}
