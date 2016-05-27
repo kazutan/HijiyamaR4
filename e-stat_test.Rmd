@@ -1,0 +1,182 @@
+---
+title: "e-statをRでたたいてみる"
+subtitle: "Hijiyama.R #4"
+author: "kazutan"
+date: "2016年5月28日"
+output:
+  slidy_presentation:
+    duration: 10
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+myappId <- readLines("estatid")
+```
+
+## 今回のお話
+
+- e-statはAPIを公開
+    - Webで簡単に登録可能
+- たくさんのデータが公開されている
+    - 自力で探してDLして読み込むのは面倒
+- だったらもうRでやるしかないですね
+    - estatapiパッケージを利用
+    - このパッケージの使い方については以下のQiita記事を参照
+    - [estatapiパッケージで簡単にe-Statのデータ取得](http://qiita.com/kazutan/items/9c0b2dd0f055fde45cda)
+
+## 今回の流れ
+
+- e-statへの登録とappID発行
+- データリストから必要なデータを探す
+- ターゲットのデータを読み込む
+- データ整形
+- 可視化
+- 参考資料
+
+## e-statへの登録とappId発行
+
+1. [e-StatのAPI機能のサイト](http://www.e-stat.go.jp/api/)へ
+2. 利用登録へ
+3. メアド登録してメールを受信し、本文内にあるリンク先へ
+4. 本登録画面が出るので必要事項を入力
+5. 本登録が完了したら、1のAPI機能トップサイトからログイン
+6. 「アプリケーションIDの取得」で、appIdを発行する
+
+## データリストから必要なデータを探す
+
+- 今回使用したいデータは[平成23年度社会生活基本調査](http://www.stat.go.jp/data/shakai/2011/)
+    - API機能で利用するためには**政府統計コード**が必要
+    - これは[こちらの一覧](http://www.e-stat.go.jp/api/api-data/)から探す
+    - でも今回は使いたい調査名などはわかっていたし、検索ワードがわかれば問題ないのでスルー
+- 検索ワードに"社会生活基本調査"を設定してデータリストを取得
+    - なお`appId`はすでに`myappID`に格納してあることとします
+
+```{r cache=TRUE}
+library(devtools)
+# install_github("yutannihilation/estatapi")
+library(estatapi)
+StatsList <- estat_getStatsList(appId = myappId, searchWord = "社会生活基本調査")
+str(StatsList)
+head(StatsList)
+```
+
+- "社会生活基本調査"のキーワードでヒットするもの全てを持ってくる
+    - ほしいのは平成23年度のデータ
+    - ほしいデータのためにフィルタかけてみます。
+
+```{r}
+library(dplyr)
+library(stringr)
+x <- StatsList %>% 
+  filter(stringr::str_detect(.$STATISTICS_NAME, "平成23.*Ａ.*時間帯")) %>% 
+  filter(.$"@id"=="0003066844")
+str(x)
+head(x)
+```
+
+- これで`x`にターゲットの調査データを格納
+
+## ターゲットのデータを読み込む
+
+- 調査データから、ターゲットのデータを読み込む
+    - まずメタ情報を取得
+
+```{r cache=TRUE}
+meta_info <- estat_getMetaInfo(appId = myappId, statsDataId = x$"@id")
+names(meta_info)
+str(meta_info)
+head(meta_info)
+```
+
+- データを読み込んでみる
+    - 今回は各時間帯における睡眠率(`meta_info$cat01$"@id"="002"`)で、全国(`meta_info$area$"@id"="00000"`)なはず
+```{r cache=TRUE}
+df <- estat_getStatsData(
+  appId = myappId,
+  statsDataId = x$"@id",
+  cdCat01 = "002",
+  cdArea = "00000")
+str(df)
+```
+
+- 引数の`cdCat01`とかは、必要な項目を絞るために必要
+    - なくても走るけど大量のデータを持ってくる
+    - 仕様上10万を超えるとそこまでしか持ってこない
+    - その場合は同一の内容に加え`startPosition=*`(*は数値)として続きを取得
+    - 詳しくは[この素晴らしいパッケージを作成されたユタニさんの解説記事](http://notchained.hatenablog.com/entry/2015/11/01/084909)を参照
+
+- もし`cat01`内で`@name="睡眠"`だけがほしいなら、この"睡眠"の`@code`が必要
+    - 私の場合はこんな感じで探しました:
+
+```{r}
+meta_info$cat01 %>% 
+  filter(.$"@name"=="睡眠")
+```
+
+- これで「15分毎での、睡眠選択率」(「この時間帯、あなたはどんな行動をしてましたか?」で「睡眠」を選択していた率)のデータを取得
+    - ただしこのままでは使えないのでもうちょっと前処理が必要
+
+## データの整形と可視化
+
+- 必要なフィールドとレコードを取り出して整える
+    - 元データが結構アレなので苦労します
+    - まずはどんな感じかチェック
+
+```{r}
+str(df)
+head(df,10)
+```
+
+- いい感じで泣ける
+    - 一気に処理します
+
+```{r}
+library(lubridate)
+kosaki <- df %>% 
+  filter(stringr::str_detect(.$cat03_info, "^行動者率")) %>%  #データじゃない部分を削除
+  select(sex=cat02_info,time=cat03_info,weekday=cat04_info, value) %>% #変数選択
+  mutate(sex=as.factor(sex)) %>%  #性別をfactorに変換
+  mutate(weekday=as.factor(weekday)) %>% #曜日をfactorに変換
+  mutate(time=stringr::str_extract(.$time,"\\d{1,2}:\\d{1,2}")) %>% #timeの最初の時刻だけ切り出す
+  mutate(time=parse_date_time2(.$time, "H:M")) #時間に変換
+str(kosaki)
+head(kosaki,10)
+```
+
+- これでやっと使えるデータに
+    - `time`がアレなのは時系列めんどくさかったから
+    - 堪忍してつかぁさい
+
+## ggplot2による可視化
+
+- 面倒なのでggplot2でさくっと可視化
+    - すみません雑にやりました
+
+```{r}
+library(ggplot2)
+kosaki_weekday <- kosaki %>% 
+  group_by(time,weekday) %>% 
+  summarise(value=mean(value))
+ggplot(kosaki_weekday, aes(x=time, y=value, color=weekday)) +
+  geom_line() +
+  labs(title="各時間帯における睡眠率(土・日・平日別)", y="睡眠率")
+
+kosaki_fm <- kosaki %>% 
+  group_by(time,sex) %>% 
+  summarise(value=mean(value))
+ggplot(kosaki_fm, aes(x=time, y=value, color=sex)) + 
+  geom_line() +
+  labs(title="各時間帯における睡眠率(性別)", y="睡眠率")
+```
+
+- 本当はdygraphsパッケージ使ってグリグリ動くようにしたかったorz
+
+
+## Enjoy!
+
+### 参考資料
+
+- [e-Stat APIをRから使うパッケージを作りました - Technically, technophobic.](http://notchained.hatenablog.com/entry/2015/11/01/084909)
+- [Rで統計API - 備忘録＠かすみがおか](http://nonki1974.hateblo.jp/entry/2013/06/14/221243)
+- [RPubs - 政府統計の総合窓口(e-Stat)のAPIを使ってみよう [R編]](http://rpubs.com/R_Linux/estat?utm_source=twitterfeed&utm_medium=twitter)
+- [e-StatのAPI](https://oku.edu.mie-u.ac.jp/~okumura/stat/estat.html)
