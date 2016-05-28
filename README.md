@@ -6,20 +6,20 @@
 
 ### Rの導入
 
-- [スライド]()
+- [スライド](http://kazutan.github.io/HijiyamaR4/r-intro.html)
 
 RとRStudioの導入と、かんたんなさわりのみ。今後参考になる資料などを最後にちょっと紹介。
 
 ### Rによるデータハンドリング入門
 
-- [スライド版]()
-- [ドキュメント版]()
+- [スライド版](http://kazutan.github.io/HijiyamaR4/data_handling_s.html)
+- [ドキュメント版](http://kazutan.github.io/HijiyamaR4/data_handling_d.html)
 
 dplyrパッケージ、tidyrパッケージを利用したデータいじり入門。よく使う関数の紹介。
 
 ### R Markdownちょいネタ集(完全版)
 
-- [スライド]()
+- [スライド](http://kazutan.github.io/HijiyamaR4/Rmd_koneta.html)
 
 今回は6つのトピック。そのうち5つはTokyo.R #53 でLTしたのと同一。
 
@@ -53,6 +53,7 @@ TOC(Table Of Contents)とは見出し一覧表のことです。これを自動�
 
 ### e-statをRでたたいてみる
 
+- [スライド](http://kazutan.github.io/HijiyamaR4/e-stat_test.html)
 これはスライドの最初にある[Qiita記事](http://qiita.com/kazutan/items/9c0b2dd0f055fde45cda)の内容をベースに、実際にプロットするところまでやってます。
 
 e-statのデータに触れたことがある方はわかると思いますが、あれだけ興味深いデータが公開されているにもかかわらず、すごく扱いづらいんです。でもこの記事で紹介しているパッケージと関数を利用することで、非常にスムーズにデータを取得できます。まあある程度の前処理は必要ですけどね…。
