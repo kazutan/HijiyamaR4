@@ -34,7 +34,7 @@
         <h1>
 <a id="hijiyamar-4-資料置き場" class="anchor" href="#hijiyamar-4-%E8%B3%87%E6%96%99%E7%BD%AE%E3%81%8D%E5%A0%B4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hijiyama.R #4 資料置き場</h1>
 
-<p>ここは2016/05/28に広島市内で開催された[Hijiyama.R #4]で私が発表した資料をおいています。</p>
+<p>ここは2016/05/28に広島市内で開催された<a href="https://atnd.org/events/75451">Hijiyama.R #4</a>で私が発表した資料をおいています。</p>
 
 <h2>
 <a id="発表内容" class="anchor" href="#%E7%99%BA%E8%A1%A8%E5%86%85%E5%AE%B9" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>発表内容</h2>
@@ -67,39 +67,19 @@
 
 <p>今回は6つのトピック。そのうち5つはTokyo.R #53 でLTしたのと同一。</p>
 
-<h4>
-<a id="タブ機能について" class="anchor" href="#%E3%82%BF%E3%83%96%E6%A9%9F%E8%83%BD%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>タブ機能について</h4>
-
-<p>R Markdownは標準でBootstrapが組み込まれているので、これを利用するとhtmlドキュメントにタブ機能を実装できます。</p>
-
-<p>R Markdownでは、タブ機能を利用する要素を含んでいたら自動的にタブ用のjsライブラリを組み込んで実現してくれます。自分でjavascriptをいじったりする必要もなく簡単に実装できるため、ただのMarkdownよりもずっと楽勝です。</p>
-
-<h4>
-<a id="フローティングtoc" class="anchor" href="#%E3%83%95%E3%83%AD%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0toc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>フローティングTOC</h4>
-
-<p>TOC(Table Of Contents)とは見出し一覧表のことです。これを自動生成する機能はPandoc Markdownに備わっていて以前から利用可能でした。ただこの場合、タイトルのすぐ下に挿入され、固定されます。どうせならサイドバーに配置してちゃんと追いかけてくれればいいのにと思うはずです。</p>
-
-<p>これについては上述のBootstrapに機能として入っています。そこでR MarkdownではこのBootstrapのフローティングTOCを使えるようにしたのです。この機能も自力で実現しようとちょっと取り組んでいたのですが…使えるようになれば問題ないです。</p>
-
-<h4>
-<a id="新規rmd作成関数" class="anchor" href="#%E6%96%B0%E8%A6%8Frmd%E4%BD%9C%E6%88%90%E9%96%A2%E6%95%B0" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>新規Rmd作成関数</h4>
-
-<p>自分の趣味で作りました。個人的利用を念頭に作っていますので、日本語での落とし穴などを回避するためによく使ってます。あと高頻度に追加・修正してますし、対応フォーマットもガンガン追加してますので、そのあたりはご注意ください。</p>
-
-<h4>
-<a id="rmdでwebサイト作成" class="anchor" href="#rmd%E3%81%A7web%E3%82%B5%E3%82%A4%E3%83%88%E4%BD%9C%E6%88%90" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>RmdでWebサイト作成</h4>
-
-<p>以前からRStudio &amp; RMarkdownでやる方法はあったのですが、結構面倒だったり落とし穴があったりして利用してませんでした。今回RStudioのメンバーがかなり開発を進め、非常に簡単にできるようになりました。利用方法については現時点で国内記事は観測していませんので、本家ドキュメントを参照してください。ポイントはProject Optionでbuild toolsをWeb siteに設定するところです。</p>
-
-<h4>
-<a id="ダッシュボードを作りたい" class="anchor" href="#%E3%83%80%E3%83%83%E3%82%B7%E3%83%A5%E3%83%9C%E3%83%BC%E3%83%89%E3%82%92%E4%BD%9C%E3%82%8A%E3%81%9F%E3%81%84" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ダッシュボードを作りたい</h4>
-
-<p>よくこういうレポートを作成しているのがあるのですが、ついにRmdから一発で作成できるパッケージが出ました。出来立てホヤホヤなので、今後使用変更などあるかもしれませんが、いろいろ確認してまとまった記事にしたいと思います。</p>
-
-<h4>
-<a id="r-notebookについて" class="anchor" href="#r-notebook%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>R notebookについて</h4>
-
-<p>これについては、2016/05/28現在でRStudio側からの公式アナウンスが出ていませんが、かなり強力なものとなります。Rmd編集中すぐに実行して確認できるため、Rmd作成が非常に捗ることとなるでしょう。</p>
+<ol>
+<li>タブ機能について<br>
+R Markdownは標準でBootstrapが組み込まれているので、これを利用するとhtmlドキュメントにタブ機能を実装できます。R Markdownでは、タブ機能を利用する要素を含んでいたら自動的にタブ用のjsライブラリを組み込んで実現してくれます。自分でjavascriptをいじったりする必要もなく簡単に実装できるため、ただのMarkdownよりもずっと楽勝です。</li>
+<li>フローティングTOC<br>
+TOC(Table Of Contents)とは見出し一覧表のことです。これを自動生成する機能はPandoc Markdownに備わっていて以前から利用可能でした。ただこの場合、タイトルのすぐ下に挿入され、固定されます。どうせならサイドバーに配置してちゃんと追いかけてくれればいいのにと思うはずです。これについては上述のBootstrapに機能として入っています。そこでR MarkdownではこのBootstrapのフローティングTOCを使えるようにしたのです。この機能も自力で実現しようとちょっと取り組んでいたのですが…使えるようになれば問題ないです。</li>
+<li>新規Rmd作成関数<br>
+自分の趣味で作りました。個人的利用を念頭に作っていますので、日本語での落とし穴などを回避するためによく使ってます。あと高頻度に追加・修正してますし、対応フォーマットもガンガン追加してますので、そのあたりはご注意ください。</li>
+<li>RmdでWebサイト作成<br>
+以前からRStudio &amp; RMarkdownでやる方法はあったのですが、結構面倒だったり落とし穴があったりして利用してませんでした。今回RStudioのメンバーがかなり開発を進め、非常に簡単にできるようになりました。利用方法については現時点で国内記事は観測していませんので、本家ドキュメントを参照してください。ポイントはProject Optionでbuild toolsをWeb siteに設定するところです。</li>
+<li>ダッシュボードを作りたい  よくこういうレポートを作成しているのがあるのですが、ついにRmdから一発で作成できるパッケージが出ました。出来立てホヤホヤなので、今後使用変更などあるかもしれませんが、いろいろ確認してまとまった記事にしたいと思います。</li>
+<li>R notebookについて<br>
+これについては、2016/05/28現在でRStudio側からの公式アナウンスが出ていませんが、かなり強力なものとなります。Rmd編集中すぐに実行して確認できるため、Rmd作成が非常に捗ることとなるでしょう。</li>
+</ol>
 
 <h3>
 <a id="e-statをrでたたいてみる" class="anchor" href="#e-stat%E3%82%92r%E3%81%A7%E3%81%9F%E3%81%9F%E3%81%84%E3%81%A6%E3%81%BF%E3%82%8B" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>e-statをRでたたいてみる</h3>
